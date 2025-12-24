@@ -1238,14 +1238,14 @@
                 <div class="tab" data-category="theater">IN THEATER</div>
                 <div class="tab" data-category="popular">POPULAR</div>
                 <div class="tab" data-category="tv">TV SERIES</div>
-                <div class="tab" data-category="watchlist">MY LIST</div>
+                <div class="tab" data-category="watchlist">FAV</div>
             </div>
         </div>
     </div>
 
     <div class="container">
         <div class="carousel-section" id="carouselSection">
-            <div class="carousel-title">🔥 TOP TRENDING</div>
+            <div class="carousel-title">TOP TRENDING 🔥</div>
             <div class="carousel-container" id="carouselContainer">
                 <div class="carousel-wrapper" id="carouselWrapper"></div>
             </div>
@@ -1282,9 +1282,13 @@
                 <div id="playButton" class="play-button hidden">
                     <div class="play-icon"></div>
                 </div>
-                <iframe id="trailerPlayer" class="trailer-player hidden" 
-                        allowfullscreen 
-                        allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                <iframe
+    id="trailerPlayer"
+    class="trailer-player hidden"
+    allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+    allowfullscreen
+    referrerpolicy="origin-when-cross-origin">
+                </iframe>
                 <button class="close-btn" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body">
@@ -1707,15 +1711,25 @@ backToTop.addEventListener('click', () => {
                 fetchMovies();
             });
 
-            // Play button
-            playButton.addEventListener('click', () => {
-                if (currentTrailerKey) {
-                    trailerPlayer.src = `https://www.youtube.com/embed/${currentTrailerKey}?autoplay=1&playsinline=1&rel=0&modestbranding=1`;
-                    trailerThumbnail.classList.add('hidden');
-                    playButton.classList.add('hidden');
-                    trailerPlayer.classList.remove('hidden');
-                }
-            });
+            // Play button (FIXED – avoids YouTube captcha)
+playButton.addEventListener('click', () => {
+    if (!currentTrailerKey) return;
+
+    const origin = encodeURIComponent(window.location.origin);
+
+    trailerPlayer.src =
+        `https://www.youtube-nocookie.com/embed/${currentTrailerKey}` +
+        `?autoplay=1` +
+        `&mute=1` +
+        `&playsinline=1` +
+        `&rel=0` +
+        `&modestbranding=1` +
+        `&origin=${origin}`;
+
+    trailerThumbnail.classList.add('hidden');
+    playButton.classList.add('hidden');
+    trailerPlayer.classList.remove('hidden');
+});
 
             // Infinite scroll
             window.addEventListener('scroll', () => {
