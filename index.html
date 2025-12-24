@@ -89,12 +89,15 @@
             z-index: 100;
             border-bottom: 1px solid var(--border-subtle);
             transition: all 0.4s var(--animation-smooth);
+            transform-origin: top;
+            will-change: transform;
+            height: 128px;
         }
 
         .header.scrolled {
-            padding: 12px 0;
             background: rgba(26, 26, 26, 0.7);
             backdrop-filter: var(--blur-glass);
+            transform: scaleY(0.94);
         }
 
         .header-top {
