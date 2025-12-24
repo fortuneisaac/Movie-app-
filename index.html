@@ -1959,21 +1959,31 @@ backToTop.addEventListener('click', () => {
                 document.getElementById('modalOverview').textContent = details.overview || 'No description available.';
 
                 // Trailer
-                const trailer = videos.results?.find(v => v.type === 'Trailer' && v.site === 'YouTube');
-                if (trailer) {
-                    currentTrailerKey = trailer.key;
-                    trailerThumbnail.src = `https://img.youtube.com/vi/${trailer.key}/hqdefault.jpg`;
-                    trailerThumbnail.classList.remove('hidden');
-                    playButton.classList.remove('hidden');
-                    trailerPlayer.src =
-  `https://www.youtube.com/embed/${currentTrailerKey}` +
-  `?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1`;
-                } else {
-                    modalPoster.src = details.poster_path 
-                        ? `${IMAGE_BASE_URL}${details.poster_path}`
-                        : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQ1MCIgdmlld0JveD0iMCAwIDMwMCA0NTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iNDUwIiBmaWxsPSIjMmEyYTJhIi8+CjxwYXRoIGQ9Ik0xNTAgMjI1QzE1MCAyMzIuOCAxNDQuMiAyMzguNSAxMzcgMjM4LjVDMTI5LjggMjM4LjUgMTI0IDIzMi44IDEyNCAyMjVDMTI0IDIxNy4yIDEyOS44IDIxMS41IDEzNyAyMTEuNUMxNDQuMiAyMTEuNSAxNTAgMjE3LjIgMTUwIDIyNVoiIGZpbGw9IiM0YTRhNGEiLz4KPC9zdmc+';
-                    modalPoster.classList.remove('hidden');
-                }
+const trailer = videos.results?.find(
+    v => v.type === 'Trailer' && v.site === 'YouTube'
+);
+
+if (trailer) {
+    currentTrailerKey = trailer.key;
+
+    // Set trailer thumbnail
+    trailerThumbnail.src = `https://img.youtube.com/vi/${trailer.key}/hqdefault.jpg`;
+    trailerThumbnail.classList.remove('hidden');
+
+    // Show play button
+    playButton.classList.remove('hidden');
+
+    // Reset player state (IMPORTANT)
+    trailerPlayer.src = '';
+    trailerPlayer.classList.add('hidden');
+} else {
+    // No trailer → fallback poster
+    modalPoster.src = details.poster_path
+        ? `${IMAGE_BASE_URL}${details.poster_path}`
+        : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQ1MCIgdmlld0JveD0iMCAwIDMwMCA0NTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iNDUwIiBmaWxsPSIjMmEyYTJhIi8+CjxwYXRoIGQ9Ik0xNTAgMjI1QzE1MCAyMzIuOCAxNDQuMiAyMzguNSAxMzcgMjM4LjVDMTI5LjggMjM4LjUgMTI0IDIzMi44IDEyNCAyMjVDMTI0IDIxNy4yIDEyOS44IDIxMS41IDEzNyAyMTEuNUMxNDQuMiAyMTEuNSAxNTAgMjE3LjIgMTUwIDIyNVoiIGZpbGw9IiM0YTRhNGEiLz4KPC9zdmc+';
+
+    modalPoster.classList.remove('hidden');
+        }
 
                 // Load cast
                 const castList = document.getElementById('castList');
