@@ -1965,6 +1965,9 @@ backToTop.addEventListener('click', () => {
                     trailerThumbnail.src = `https://img.youtube.com/vi/${trailer.key}/hqdefault.jpg`;
                     trailerThumbnail.classList.remove('hidden');
                     playButton.classList.remove('hidden');
+                    trailerPlayer.src =
+  `https://www.youtube.com/embed/${currentTrailerKey}` +
+  `?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1`;
                 } else {
                     modalPoster.src = details.poster_path 
                         ? `${IMAGE_BASE_URL}${details.poster_path}`
