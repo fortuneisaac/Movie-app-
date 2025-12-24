@@ -1288,7 +1288,7 @@
     allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
     allowfullscreen
     referrerpolicy="origin-when-cross-origin">
-                </iframe>
+</iframe>
                 <button class="close-btn" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body">
@@ -1711,11 +1711,9 @@ backToTop.addEventListener('click', () => {
                 fetchMovies();
             });
 
-            // Play button (FIXED – avoids YouTube captcha)
+            // Play button (GitHub Pages safe)
 playButton.addEventListener('click', () => {
     if (!currentTrailerKey) return;
-
-    const origin = encodeURIComponent(window.location.origin);
 
     trailerPlayer.src =
         `https://www.youtube-nocookie.com/embed/${currentTrailerKey}` +
@@ -1723,8 +1721,7 @@ playButton.addEventListener('click', () => {
         `&mute=1` +
         `&playsinline=1` +
         `&rel=0` +
-        `&modestbranding=1` +
-        `&origin=${origin}`;
+        `&modestbranding=1`;
 
     trailerThumbnail.classList.add('hidden');
     playButton.classList.add('hidden');
