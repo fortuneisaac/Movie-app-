@@ -118,7 +118,7 @@
 
             -webkit-text-fill-color: transparent;
 
-            transition: all 0.4s var(--animation-smooth);
+            transition: font-size 0.3s var(--animation-smooth);
             position: relative;
         }
 
@@ -1336,7 +1336,6 @@
         let searchQuery = '';
         let carouselMovies = [];
         let currentCarouselIndex = 0;
-        let lastScrollY = 0;
         let isTVMode = false;
         let watchlist = JSON.parse(localStorage.getItem('movieflix_watchlist') || '[]');
         let continueWatching = JSON.parse(localStorage.getItem('movieflix_continue') || '{}');
@@ -1467,28 +1466,27 @@
             localStorage.setItem('movieflix_continue', JSON.stringify(continueWatching));
         }
 
-        // Dynamic Header Scroll Effect
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-            
-            if (currentScrollY > 80 && currentScrollY > lastScrollY) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            lastScrollY = currentScrollY;
+        // Dynamic Header Scroll Effect (FIXED – NO SHAKE)
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
 
-            if (currentScrollY > 500) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
+    if (scrollY > 80) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
 
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+    if (scrollY > 500) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
 
         // Pull-to-Refresh
         let touchStartY = 0;
