@@ -1282,13 +1282,7 @@
                 <div id="playButton" class="play-button hidden">
                     <div class="play-icon"></div>
                 </div>
-                <iframe
-    id="trailerPlayer"
-    class="trailer-player hidden"
-    allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-    allowfullscreen
-    referrerpolicy="origin-when-cross-origin">
-</iframe>
+                <div id="trailerContainer" class="trailer-player hidden"></div>
                 <button class="close-btn" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body">
@@ -1711,21 +1705,28 @@ backToTop.addEventListener('click', () => {
                 fetchMovies();
             });
 
-            // Play button (GitHub Pages safe)
+            // Play button (iframe created on demand — bulletproof)
 playButton.addEventListener('click', () => {
     if (!currentTrailerKey) return;
 
-    trailerPlayer.src =
-        `https://www.youtube-nocookie.com/embed/${currentTrailerKey}` +
-        `?autoplay=1` +
-        `&mute=1` +
-        `&playsinline=1` +
-        `&rel=0` +
-        `&modestbranding=1`;
+    // Clear any previous iframe
+    trailerContainer.innerHTML = '';
+
+    const iframe = document.createElement('iframe');
+    iframe.src =
+        `https://www.youtube.com/embed/${currentTrailerKey}` +
+        `?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1`;
+
+    iframe.allow =
+        'autoplay; encrypted-media; fullscreen; picture-in-picture';
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = 'origin-when-cross-origin';
+
+    trailerContainer.appendChild(iframe);
 
     trailerThumbnail.classList.add('hidden');
     playButton.classList.add('hidden');
-    trailerPlayer.classList.remove('hidden');
+    trailerContainer.classList.remove('hidden');
 });
 
             // Infinite scroll
@@ -1940,6 +1941,7 @@ playButton.addEventListener('click', () => {
             modalPoster.classList.add('hidden');
             currentTrailerKey = null;
             similarGrid.innerHTML = '';
+            trailerContainer.innerHTML = '';
             
             try {
                 const endpoint = isTVMode ? 'tv' : 'movie';
